@@ -1,3 +1,28 @@
-<h1>Nova categoria</h1>
+<h1>Cadastro de categoria</h1>
+<%= form_with model: @category, locals:true do |form| %>
+    
+    <p>
+      <%= form.label :name%>
+      <%= form.text_field :name %>
+    </p>
 
-<%= render partial: 'form', locals: { category: @category } %>
+    <p>
+      <%= form.label :daily_rate%>
+      <%= form.number_field :daily_rate%>
+    </p>
+
+    <p>
+      <%= form.label :car_insurance%>
+      <%= form.number_field :car_insurance%>
+    </p>
+
+    <p>
+      <%= form.label :third_party_insurance%>
+      <%= form.number_field :third_party_insurance%>
+    </p>
+
+    <p>
+      <%= form.submit 'Salvar'%>
+    </p>
+
+<%end%>
