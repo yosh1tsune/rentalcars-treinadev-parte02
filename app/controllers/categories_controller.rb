@@ -23,6 +23,13 @@ class CategoriesController < ApplicationController
     redirect_to @category
   end
 
+  def update
+    @category = Category.find(params[:id])
+    @category.update(category_params)
+    flash[:notice]= 'Categoria atualizada com sucesso!'
+    redirect_to @category
+  end
+
   private
 
   def category_params

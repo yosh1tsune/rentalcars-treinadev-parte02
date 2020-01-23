@@ -20,7 +20,7 @@ feature 'Admin edit category' do
     expect(page).to have_content('Categoria atualizada com sucesso!')
     expect(page).to have_content('Categoria: B')
     expect(page).to have_content('Diária: R$ 60,00')
-    expect(page).to have_content('Seguro de carro: R$ 55,00')
+    expect(page).to have_content('Seguro do carro: R$ 55,00')
     expect(page).to have_content('Seguro de terceiros: R$ 37,00')
   end
 end
