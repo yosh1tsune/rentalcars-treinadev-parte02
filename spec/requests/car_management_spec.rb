@@ -70,11 +70,10 @@ describe 'Car Management' do
     end
 
     it 'and have erro 500' do
-      car = create(:car)
+      allow_any_instance_of(Car).to receive(:save!).and_raise(ActiveRecord::ActiveRecordError)
+
       subsidiary = create(:subsidiary)
       car_model = create(:car_model)
-
-      allow(car).to receive(:save!).and_return('error')
 
       post api_v1_cars_path, params: {car_km: 0, color: 'Azul', 
                              license_plate: 'ABC-1234', 
@@ -107,12 +106,38 @@ describe 'Car Management' do
       expect(car.car_model_id).to eq new_car_model.id
     end
 
+    it "and try to update a object that doesn't exist" do
+      patch api_v1_car_path(1), params: {car_km: 99, color: 'Preto', 
+                                        license_plate: 'YXZ-6789'}
+                                        
+      expect(response).to have_http_status(:not_found)
+    end
+
     it 'and fail if not all fields are filled' do
       car = create(:car)
 
       patch api_v1_car_path(car), params: { color: nil}
 
       expect(response).to have_http_status(412)
+    end
+  end
+
+  context 'deleted' do
+    it 'should delete a car' do 
+      car = create(:car)
+
+      expect {
+        delete api_v1_car_path(car)
+      }.to change(Car, :count).from(1).to(0)
+      
+      expect(response).to have_http_status(:ok)
+      expect(response.body).to eq('Objeto deletado com sucesso!'.as_json)
+    end
+
+    it "and try to destroy a object that doesn't exist" do
+      delete api_v1_car_path(id:999)
+
+      expect(response).to have_http_status(:not_found)
     end
   end
 end
